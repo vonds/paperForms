@@ -1,0 +1,101 @@
+body {
+    font-family: 'Dosis', sans-serif;
+    background: url('background.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+h3 {
+    font-size: 90px;
+}
+
+
+.jumbotron {
+    background: rgba(255, 255, 255, 0.09);
+    text-shadow: #fff 5px 5px 10px;
+}
+
+.btn {
+    margin: 10px;
+}
+
+.btn-light {
+    background: rgba(255, 255, 255, .02);
+    width: 200px;
+    border: 1px solid #333;
+    border-radius: 0;
+}
+
+.btn-light:hover {
+    background: rgba(0, 0, 0, .8);
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.wrapper {	
+	margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+}
+
+input[type="password"] {
+    margin-bottom: 20px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    margin: 8px;
+    border-radius: 0 10px 0 0;
+    border-bottom: 1px solid #333;
+    border-left: 1px solid #333;
+    
+}
+
+.form-signin {
+    border-radius: 0;
+    border: 1px solid #333;
+}
+
+.list-group-item {
+    width: 300px;
+    border-radius: 0;
+    background: #fff;
+    color: #333;
+    border: 1px solid #333;
+    display: inline;
+}
+
+.list-group-item:hover {
+    background: #333;
+    color: #fff
+}
+
+
+.nav-link {
+    color: #999;
+
+}
+
+.nav-link:hover {
+    color:#fff;
+}
+
+p {
+    background: #fff;
+    border: 1px solid #333;
+    padding: 20px;
+}
