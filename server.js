@@ -4,7 +4,7 @@
 // get all the tools I need
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 7000
 const mongoose = require('mongoose')
 const passport = require('passport')
 const flash = require('connect-flash')
@@ -22,7 +22,7 @@ mongoose.connect(configDB.url, { useMongoClient: true }, (err, database) => {
   if (err) return console.log(err)
   db = database
   require('./app/routes.js')(app, passport, db)
-}); // connect to database
+}) // connect to database
 
 
 
