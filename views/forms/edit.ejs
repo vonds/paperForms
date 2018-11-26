@@ -1,0 +1,13 @@
+<section class="card card-body">
+    <h3>Edit Form</h3>
+    <form action="/forms" method="post">
+        <section class="form-group">
+            <input type="text" class="form-control" name="question" value="<% forms.question %>" required>
+        </section>
+        <section class="form-group">
+            <label for="question">Paragraph</label>
+            <textarea class="form-control" name="answer"></textarea>
+        </section>
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</section>

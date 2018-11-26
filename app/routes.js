@@ -1,41 +1,92 @@
-module.exports = function (app, passport, db) {
+module.exports = (app, passport, db) => {
 
     // normal routes ===============================================================
 
-    // show the home page (will also have our login links)
-    app.get('/', function (req, res) {
-        res.render('index.ejs');
-    });
+    // Index Route
+    app.get('/', (req, res) => {
+        const locals = {
+            title: 'Paper'
+        }
+        res.render('index', locals)
+    })
 
-    // PROFILE SECTION =========================
-    app.get('/form', isLoggedIn, function (req, res) {
-        db.collection('messages').find().toArray((err, result) => {
-            if (err) return console.log(err)
-            res.render('form.ejs', {
-                user: req.user,
-                messages: result
-            })
+    // About Route
+    app.get('/about', (req, res) => {
+        res.render('about')
+    })
+
+    // Edit Form
+    app.get('/forms/edit', (req, res) => {
+        Form.findOne({
+            _id: req.params.id
         })
-    });
+            .then(form => {
+                res.render('forms/edit', {
+                    idea: idea
+                })
+            })
+    })
+
+    // Created Forms Page
+    app.get('/forms', (req, res) => {
+        db.collection('forms').find().toArray((err, result) => {
+            if (err) return console.log(err)
+            res.render('forms/index'), {
+                user: req.user,
+                forms: result
+            }
+        })
+    })
+
+
+    // Add Paper Form
+    app.get('/forms/add', (req, res) => {
+        res.render('forms/add')
+    })
+
+    // Process Form
+    app.post('/forms', (req, res) => {
+        let errors = [];
+        if (!req.body.question) {
+            errors.push({ text: 'Please fill in your question' })
+        }
+
+        if (errors.length > 0) {
+            res.render('forms/add', {
+                errors: errors,
+                question: req.body.question
+            })
+        } else {
+            const newPaper = {
+                question: req.body.question,
+                answer: req.body.answer
+            }
+            new Form(newPaper)
+                .save()
+                .then(form => {
+                    res.redirect('/forms')
+                })
+        }
+    })
 
     // LOGOUT ==============================
-    app.get('/logout', function (req, res) {
+    app.get('/logout', (req, res) => {
         req.logout();
         res.redirect('/');
     });
 
-    // message board routes ===============================================================
+    // Form routes ===============================================================
 
-    app.post('/messages', (req, res) => {
-        db.collection('messages').save({ name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown: 0 }, (err, result) => {
+    app.post('/form', (req, res) => {
+        db.collection('paper').save({ name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown: 0 }, (err, result) => {
             if (err) return console.log(err)
             console.log('saved to database')
             res.redirect('/form')
         })
     })
 
-    app.put('/messages', (req, res) => {
-        db.collection('messages')
+    app.put('/form', (req, res) => {
+        db.collection('paper')
             .findOneAndUpdate({ name: req.body.name, msg: req.body.msg }, {
                 $set: {
                     thumbUp: req.body.thumbUp + 1
@@ -49,8 +100,8 @@ module.exports = function (app, passport, db) {
                 })
     })
 
-    app.delete('/messages', (req, res) => {
-        db.collection('messages').findOneAndDelete({ name: req.body.name, msg: req.body.msg }, (err, result) => {
+    app.delete('/form', (req, res) => {
+        db.collection('paper').findOneAndDelete({ name: req.body.name, msg: req.body.msg }, (err, result) => {
             if (err) return res.send(500, err)
             res.send('Message deleted!')
         })
@@ -63,7 +114,7 @@ module.exports = function (app, passport, db) {
     // locally --------------------------------
     // LOGIN ===============================
     // show the login form
-    app.get('/login', function (req, res) {
+    app.get('/login', (req, res) => {
         res.render('login.ejs', { message: req.flash('loginMessage') });
     });
 
@@ -76,7 +127,7 @@ module.exports = function (app, passport, db) {
 
     // SIGNUP =================================
     // show the signup form
-    app.get('/signup', function (req, res) {
+    app.get('/signup', (req, res) => {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
@@ -95,11 +146,11 @@ module.exports = function (app, passport, db) {
     // user account will stay active in case they want to reconnect in the future
 
     // local -----------------------------------
-    app.get('/unlink/local', isLoggedIn, function (req, res) {
-        var user = req.user;
+    app.get('/unlink/local', isLoggedIn, (req, res) => {
+        const user = req.user;
         user.local.email = undefined;
         user.local.password = undefined;
-        user.save(function (err) {
+        user.save((err) => {
             res.redirect('/form');
         });
     });
@@ -107,7 +158,7 @@ module.exports = function (app, passport, db) {
 };
 
 // route middleware to ensure user is logged in
-function isLoggedIn(req, res, next) {
+const isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated())
         return next();
 
