@@ -1,0 +1,12 @@
+body {
+    font-family: 'Dosis', sans-serif;
+    background: url('img/background.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.jumbotron {
+    background: rgba(161, 161, 161, 0.5);
+}

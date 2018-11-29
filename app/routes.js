@@ -1,4 +1,5 @@
 module.exports = (app, passport, db) => {
+    const Paper = require('./models/paper')
 
     // normal routes ===============================================================
 
@@ -15,58 +16,27 @@ module.exports = (app, passport, db) => {
         res.render('about')
     })
 
+    // Forms
+    app.get('/forms', (req, res) => {
+        const id
+        res.render('forms')
+    })
+
     // Edit Form
-    app.get('/forms/edit', (req, res) => {
+    app.get('/edit', (req, res) => {
         Form.findOne({
             _id: req.params.id
         })
             .then(form => {
-                res.render('forms/edit', {
+                res.render('/edit', {
                     idea: idea
                 })
             })
     })
 
-    // Created Forms Page
-    app.get('/forms', (req, res) => {
-        db.collection('forms').find().toArray((err, result) => {
-            if (err) return console.log(err)
-            res.render('forms/index'), {
-                user: req.user,
-                forms: result
-            }
-        })
-    })
-
-
     // Add Paper Form
-    app.get('/forms/add', (req, res) => {
-        res.render('forms/add')
-    })
-
-    // Process Form
-    app.post('/forms', (req, res) => {
-        let errors = [];
-        if (!req.body.question) {
-            errors.push({ text: 'Please fill in your question' })
-        }
-
-        if (errors.length > 0) {
-            res.render('forms/add', {
-                errors: errors,
-                question: req.body.question
-            })
-        } else {
-            const newPaper = {
-                question: req.body.question,
-                answer: req.body.answer
-            }
-            new Form(newPaper)
-                .save()
-                .then(form => {
-                    res.redirect('/forms')
-                })
-        }
+    app.get('/add', (req, res) => {
+        res.render('add')
     })
 
     // LOGOUT ==============================
@@ -77,15 +47,49 @@ module.exports = (app, passport, db) => {
 
     // Form routes ===============================================================
 
-    app.post('/form', (req, res) => {
-        db.collection('paper').save({ name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown: 0 }, (err, result) => {
+    app.post('/add', (req, res) => {
+        console.log('here i am')
+        const newPaper = new Paper()
+
+        // set the user's local credentials
+        newPaper.question = req.body.question
+
+        newPaper.save((err, result) => {
+            console.log(result.id)
+            console.log(result._id)
             if (err) return console.log(err)
             console.log('saved to database')
-            res.redirect('/form')
+            res.redirect('/forms')
         })
     })
 
-    app.put('/form', (req, res) => {
+    app.post('/forms', (req, res) => {
+        const newPaper = new Paper()
+
+        // set the user's local credentials
+        newPaper.question = req.body.question
+
+        newPaper.save((err, result) => {
+            if (err) return console.log(err)
+            console.log(result.id)
+            console.log(result._id)
+            console.log('saved to database')
+            res.redirect(`/forms?id=${result.id}`)
+        })
+    })
+
+    app.put('/forms', (req, res) => {
+        const newPaper = new Paper()
+
+        // set the user's local credentials
+        newPaper.question = req.body.question
+
+        newPaper.save((err, result) => {
+            if (err) return console.log(err)
+            console.log('saved to database')
+            res.redirect('forms')
+        })
+
         db.collection('paper')
             .findOneAndUpdate({ name: req.body.name, msg: req.body.msg }, {
                 $set: {
@@ -100,7 +104,7 @@ module.exports = (app, passport, db) => {
                 })
     })
 
-    app.delete('/form', (req, res) => {
+    app.delete('/forms', (req, res) => {
         db.collection('paper').findOneAndDelete({ name: req.body.name, msg: req.body.msg }, (err, result) => {
             if (err) return res.send(500, err)
             res.send('Message deleted!')
@@ -120,7 +124,7 @@ module.exports = (app, passport, db) => {
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/form', // redirect to the secure profile section
+        successRedirect: '/add', // redirect to the secure profile section
         failureRedirect: '/login', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
@@ -133,7 +137,7 @@ module.exports = (app, passport, db) => {
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/form', // redirect to the secure profile section
+        successRedirect: '/add', // redirect to the secure profile section
         failureRedirect: '/signup', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
