@@ -1,5 +1,8 @@
+
+const ObjectID = require('mongodb').ObjectID
+const Paper = require('./models/paper')
 module.exports = (app, passport, db) => {
-    const Paper = require('./models/paper')
+
 
     // normal routes ===============================================================
 
@@ -18,8 +21,25 @@ module.exports = (app, passport, db) => {
 
     // Forms
     app.get('/forms', (req, res) => {
-        const id
-        res.render('forms')
+
+
+        console.log(req.query)
+
+        db.collection('paper').findOne({ "_id": ObjectID(req.query.id) }, (err, result) => {
+            const locals = {
+                questions: result
+            }
+            res.render('forms', locals)
+            // const qu = {
+            //     question: result.question
+            // }
+
+        })
+        // Get the form id out of url params
+        // Use the form id to look up form from db
+        // Input that into a variable
+        // Give the variable to ejs to render page
+        // Pray to computer godesses that render page works somehow
     })
 
     // Edit Form
@@ -47,27 +67,20 @@ module.exports = (app, passport, db) => {
 
     // Form routes ===============================================================
 
-    app.post('/add', (req, res) => {
-        console.log('here i am')
-        const newPaper = new Paper()
-
-        // set the user's local credentials
-        newPaper.question = req.body.question
-
-        newPaper.save((err, result) => {
-            console.log(result.id)
-            console.log(result._id)
-            if (err) return console.log(err)
-            console.log('saved to database')
-            res.redirect('/forms')
-        })
-    })
 
     app.post('/forms', (req, res) => {
-        const newPaper = new Paper()
+        console.log(req.body)
+        const title = req.body.title
+        const question = req.body.question
+        const type = req.body.type
+        const newPaper = new Paper({
+            title: title,
+            question: question,
+            type: type
+        })
 
         // set the user's local credentials
-        newPaper.question = req.body.question
+
 
         newPaper.save((err, result) => {
             if (err) return console.log(err)
@@ -78,31 +91,31 @@ module.exports = (app, passport, db) => {
         })
     })
 
-    app.put('/forms', (req, res) => {
-        const newPaper = new Paper()
+    // app.put('/forms', (req, res) => {
+    //     const newPaper = new Paper()
 
-        // set the user's local credentials
-        newPaper.question = req.body.question
+    //     // set the user's local credentials
+    //     newPaper.question = req.body.question
 
-        newPaper.save((err, result) => {
-            if (err) return console.log(err)
-            console.log('saved to database')
-            res.redirect('forms')
-        })
+    //     newPaper.save((err, result) => {
+    //         if (err) return console.log(err)
+    //         console.log('saved to database')
+    //         res.redirect('forms')
+    //     })
 
-        db.collection('paper')
-            .findOneAndUpdate({ name: req.body.name, msg: req.body.msg }, {
-                $set: {
-                    thumbUp: req.body.thumbUp + 1
-                }
-            }, {
-                    sort: { _id: -1 },
-                    upsert: true
-                }, (err, result) => {
-                    if (err) return res.send(err)
-                    res.send(result)
-                })
-    })
+    //     db.collection('paper')
+    //         .findOneAndUpdate({ name: req.body.name, msg: req.body.msg }, {
+    //             $set: {
+    //                 thumbUp: req.body.thumbUp + 1
+    //             }
+    //         }, {
+    //                 sort: { _id: -1 },
+    //                 upsert: true
+    //             }, (err, result) => {
+    //                 if (err) return res.send(err)
+    //                 res.send(result)
+    //             })
+    // })
 
     app.delete('/forms', (req, res) => {
         db.collection('paper').findOneAndDelete({ name: req.body.name, msg: req.body.msg }, (err, result) => {
@@ -110,6 +123,29 @@ module.exports = (app, passport, db) => {
             res.send('Message deleted!')
         })
     })
+
+    // Form Submissions ===================================================
+
+
+
+
+
+    // Create new form submission
+    // app.post('/forms/:id/submit'
+
+    // List all submissions of a given form
+    // app.get('/forms/:id/submissions)
+
+    // To get an individual form submission
+    // app.get('/forms/:id/submissions/:id'
+
+    // Never look at all submissions across forms 
+    // Fields in a given form would be different than other forms
+
+
+
+
+
 
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
@@ -168,3 +204,5 @@ const isLoggedIn = (req, res, next) => {
 
     res.redirect('/');
 }
+
+

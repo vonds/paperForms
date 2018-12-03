@@ -1,1 +1,43 @@
-<h1>Form Page</h1>
+<!-- Will be dynamic as soon as forms have titles -->
+<h1>
+    <%- questions.title %>
+</h1>
+<!-- How am I delivering those -->
+
+<!-- Answer section that is disabled -->
+<!-- List of question texts -->
+<!-- Know they are in the right order -->
+<section class="card card-body">
+    <form action="/forms" method="post">
+        <section class="form-group">
+
+            <input type="hidden" value="text" name="type">
+        </section>
+        <section class="form-group">
+            <label for="answer">
+                <%- questions.question %></label>
+            <textarea class="form-control" name="answer"></textarea>
+        </section>
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</section>
+
+
+
+
+
+
+<% for(let i = 0; i <=questions.length; i++) { %>
+<h2>
+    <%- questions[i].question %>
+</h2>
+
+<textarea name="" id="" cols="30" rows="10" disabled></textarea>
+
+<% } %>
+
+
+
+
+
+<p></p>
