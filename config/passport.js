@@ -4,7 +4,7 @@
 const LocalStrategy = require('passport-local').Strategy
 
 // load up the user model
-const User = require('../app/models/user')
+const User = require('../app/models/users')
 
 // expose this function to our app using module.exports
 module.exports = (passport) => {
@@ -62,6 +62,7 @@ module.exports = (passport) => {
                     newUser.local.password = newUser.generateHash(password) // use the generateHash function in our user model
 
                     // save the user
+                    console.log('this is the new user schema:', User.collection.collectionName)
                     newUser.save((err) => {
                         if (err)
                             throw err
@@ -97,10 +98,10 @@ module.exports = (passport) => {
                 // if no user is found, return the message
                 if (!user)
                     return done(null, false, req.flash('loginMessage', 'No user found.')) // req.flash is the way to set flashdata using connect-flash
-
+                console.log(`here is the user tryiong to login ${user} ${password}`)
                 // if the user is found but the password is wrong
-                if (!user.validPassword(password))
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')) // create the loginMessage and save it to session as flashdata
+                if (!user.validPassword(password, user.local.password))
+                    return done(null, false, req.flash('loginMessage', 'Wrong password.')) // create the loginMessage and save it to session as flashdata
 
                 // all is well, return successful user
                 return done(null, user)

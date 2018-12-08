@@ -1,0 +1,21 @@
+<% for(let i = 0; i < surveyList.length ; i++ ) { %>
+
+
+<section class="card text-white title-list mx-auto mb-2">
+
+    <img class="card-img" src="img/cloud.jpg" alt="Card image">
+    <section class="card-img-overlay ">
+        <a class="btn btn-dark btn-lg nav-link float-right align-middle big-x mr-1" href="#">Delete</a>
+        <a class="btn btn-dark btn-lg nav-link float-right align-middle big-x mr-1" href="/forms?survey=<%= surveyList[i] %>">Edit</a>
+
+
+        <h5 class="card-title">
+            <%= surveyList[i] %>
+        </h5>
+    </section>
+</section>
+
+
+
+
+<% } %>

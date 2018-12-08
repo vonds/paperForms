@@ -8,5 +8,79 @@ body {
 }
 
 .jumbotron {
-    background: rgba(161, 161, 161, 0.5);
+    background: url('img/home.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  
+}
+
+.question {
+    margin-bottom: 30px;
+}
+
+.nav-link {
+    color: #333;
+}
+
+.ex-circle {
+    font-size: 20px;
+}
+
+.ex-circle:hover {
+    color: #cd0000;
+    font-size: 20px;
+    transition: 0.9s;
+    transform: rotateZ(360deg);
+}
+
+.card-title {
+    font-size: 60px;
+}
+
+.card-img {
+    object-fit: cover;
+    background: no-repeat center center fixed;
+    max-width:100%;
+    max-height:100%;    
+    -webkit-background-size: cover; /* For WebKit*/
+    -moz-background-size: cover;    /* Mozilla*/
+    -o-background-size: cover;      /* Opera*/
+    background-size: cover; 
+}
+
+.title-list {
+    object-fit: cover;
+    width: 900px;
+    height: 120px;
+    transition: all .3s ease-in-out;;
+}
+
+.title-list:hover {
+    transform: scale(1.06);
+}
+
+.btn-dark {
+    color: #fff;
+    font-size: 20px; 
+}
+
+.btn-dark:hover {
+    color: #333;
+    transition: 0.9s;
+    box-shadow: inset 400px 0 0 0 #fff;
+}
+
+.question-label {
+    font-size: 20px;
+}
+
+.editNav {
+    margin: 5px 3px 11px -57%;
+}
+
+.sticky {
+    position: sticky;
+   
 }

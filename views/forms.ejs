@@ -1,43 +1,70 @@
-<!-- Will be dynamic as soon as forms have titles -->
-<h1>
-    <%- questions.title %>
-</h1>
-<!-- How am I delivering those -->
-
-<!-- Answer section that is disabled -->
-<!-- List of question texts -->
-<!-- Know they are in the right order -->
-<section class="card card-body">
-    <form action="/forms" method="post">
-        <section class="form-group">
-
-            <input type="hidden" value="text" name="type">
-        </section>
-        <section class="form-group">
-            <label for="answer">
-                <%- questions.question %></label>
-            <textarea class="form-control" name="answer"></textarea>
-        </section>
-        <button type="submit" class="btn btn-dark">Submit</button>
-    </form>
+<section class="card-body">
+    <h1 class="text-center card-title">
+        <% if (question.length) { %>
+        <%= question[0].survey %>
+        <% } else { %>
+        Looks like you have no more questions for this survey
+        <% } %>
+    </h1>
 </section>
 
+<% if (isEditing && question.length) {%>
+<section class="sticky">
+    <section class="float-right text-center bg-dark text-white p-2 navbar">
+        <label class="pr-3" for="url">Url to current survey</label>
+        <input type="text" value="http://localhost:7000/forms?survey=<%= question[0].survey %>&isTaking=yes" id="url">
+    </section>
+    <!-- <section class="bg-dark p-2 mb-3"></section> -->
+    <section class="mx-auto text-center bg-dark p-2 mb-3 fixed">
+        <a class="btn btn-dark btn-lg mb-3 editNav sticky" href="/edit?survey=<%= question[0].survey %>">Add Question</a>
+    </section>
+</section>
+
+<%} %>
+
+<% if (!isEditing) {%>
 
 
 
+<form action="/forms/_id/answer" method="post">
+    <label>Username</label for="userID">
+    <input type="text" required>
+    <input type="submit" class="btn btn-dark btn-lg" value="Submit">
+    <%} %>
 
 
-<% for(let i = 0; i <=questions.length; i++) { %>
-<h2>
-    <%- questions[i].question %>
-</h2>
+    <% for(var i=0; i<question.length; i++) {%>
+    <section class="card card-body question">
+        <% if (isEditing) {%>
+        <section class="float-right questionSp">
+            <span class="float-right delete-question" data-question="<%= question[i].question %>">
+                <a><i class="fas fa-times-circle ex-circle"></i></a></span>
+        </section>
+        <form action="/forms" method="post">
+            <%} %>
 
-<textarea name="" id="" cols="30" rows="10" disabled></textarea>
 
+
+            <section class="form-group question-form">
+
+                <input type="hidden" value="text" name="type">
+            </section>
+            <section class="form-group">
+
+                <label class="question-label" for="answer">
+                    <%= question[i].question %>
+                </label>
+                <section class="row justify-content-between">
+
+                </section>
+
+                <textarea class="form-control" name="answer" required></textarea>
+            </section>
+            <% if (isEditing) {%>
+        </form>
+        <% } %>
+    </section>
+    <% } %>
+    <% if (!isEditing) {%>
+</form>
 <% } %>
-
-
-
-
-
-<p></p>

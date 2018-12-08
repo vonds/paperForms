@@ -1,6 +1,7 @@
 
 const ObjectID = require('mongodb').ObjectID
-const Paper = require('./models/paper')
+const Question = require('./models/questions')
+const Answer = require('./models/answers')
 module.exports = (app, passport, db) => {
 
 
@@ -19,48 +20,61 @@ module.exports = (app, passport, db) => {
         res.render('about')
     })
 
-    // Forms
-    app.get('/forms', (req, res) => {
+    // Thanks Route
+    app.get('/thanks', (req, res) => {
+        res.render('thanks')
+    })
 
+    // Forms
+    app.get('/forms', isLoggedIn, (req, res) => {
 
         console.log(req.query)
-
-        db.collection('paper').findOne({ "_id": ObjectID(req.query.id) }, (err, result) => {
+        Question.find({ survey: req.query.survey }, (err, result) => {
+            console.log('this is the result:', result)
             const locals = {
-                questions: result
+
+                question: result,
+                isEditing: !(req.query.isTaking && req.query.isTaking === 'yes'),
             }
             res.render('forms', locals)
-            // const qu = {
-            //     question: result.question
-            // }
 
         })
-        // Get the form id out of url params
-        // Use the form id to look up form from db
-        // Input that into a variable
-        // Give the variable to ejs to render page
-        // Pray to computer godesses that render page works somehow
+
     })
 
     // Edit Form
-    app.get('/edit', (req, res) => {
-        Form.findOne({
-            _id: req.params.id
+    app.get('/edit', isLoggedIn, (req, res) => {
+        console.log('survey =', req.query.survey)
+        res.render('edit', {
+            survey: req.query.survey ? req.query.survey : ''
         })
-            .then(form => {
-                res.render('/edit', {
-                    idea: idea
-                })
-            })
     })
 
     // Add Paper Form
-    app.get('/add', (req, res) => {
-        res.render('add')
+    app.get('/add', isLoggedIn, (req, res) => {
+        console.log('survey =', req.query.survey)
+        res.render('add', {
+            survey: req.query.survey ? req.query.survey : ''
+        })
     })
 
+    app.get('/list', isLoggedIn, (req, res) => {
+        Question.find({ userID: req.user._id }, (err, result) => {
+            const surveyList = []
+            for (let i = 0; i < result.length; i++) {
+                if (!surveyList.includes(result[i].survey)) {
+                    surveyList.push(result[i].survey)
+                }
+            }
+            res.render('list', {
+                surveyList: surveyList
+            })
+        })
+    })
+
+
     // LOGOUT ==============================
-    app.get('/logout', (req, res) => {
+    app.get('/logout', isLoggedIn, (req, res) => {
         req.logout();
         res.redirect('/');
     });
@@ -68,76 +82,81 @@ module.exports = (app, passport, db) => {
     // Form routes ===============================================================
 
 
-    app.post('/forms', (req, res) => {
+    app.post('/forms', isLoggedIn, (req, res) => {
         console.log(req.body)
-        const title = req.body.title
+        const survey = req.body.survey
         const question = req.body.question
         const type = req.body.type
-        const newPaper = new Paper({
-            title: title,
+        const userID = req.user._id
+        const locals = { isEditing: true }
+        const newQuestion = new Question({
+            survey: survey,
             question: question,
-            type: type
+            type: type,
+            userID: userID,
+
+
+
         })
 
-        // set the user's local credentials
 
-
-        newPaper.save((err, result) => {
+        newQuestion.save((err, result) => {
             if (err) return console.log(err)
             console.log(result.id)
             console.log(result._id)
             console.log('saved to database')
-            res.redirect(`/forms?id=${result.id}`)
+            res.redirect(`/forms?survey=${result.survey}`, locals)
         })
     })
 
-    // app.put('/forms', (req, res) => {
-    //     const newPaper = new Paper()
-
-    //     // set the user's local credentials
-    //     newPaper.question = req.body.question
-
-    //     newPaper.save((err, result) => {
-    //         if (err) return console.log(err)
-    //         console.log('saved to database')
-    //         res.redirect('forms')
-    //     })
-
-    //     db.collection('paper')
-    //         .findOneAndUpdate({ name: req.body.name, msg: req.body.msg }, {
-    //             $set: {
-    //                 thumbUp: req.body.thumbUp + 1
-    //             }
-    //         }, {
-    //                 sort: { _id: -1 },
-    //                 upsert: true
-    //             }, (err, result) => {
-    //                 if (err) return res.send(err)
-    //                 res.send(result)
-    //             })
-    // })
-
-    app.delete('/forms', (req, res) => {
-        db.collection('paper').findOneAndDelete({ name: req.body.name, msg: req.body.msg }, (err, result) => {
+    app.delete('/forms', isLoggedIn, (req, res) => {
+        db.collection('questions').findOneAndDelete({ name: req.body.name, msg: req.body.msg }, (err, result) => {
             if (err) return res.send(500, err)
             res.send('Message deleted!')
         })
     })
 
+    app.delete('/questions', (req, res) => {
+        db.collection('questions').findOneAndDelete({ question: req.body.question }, (err, result) => {
+            if (err) return res.send(500, err)
+            console.log('I am a baby squish quiche')
+            res.send('Question deleted!')
+        })
+    })
     // Form Submissions ===================================================
 
 
 
 
-
     // Create new form submission
-    // app.post('/forms/:id/submit'
+    // app.post('/forms/:id/answers'
+
+
+    app.post('/forms/_id/answer', (req, res) => {
+        console.log(req.body)
+        const surveyID = req.body.surveyID
+        const answer = req.body.answer
+        const newAnswer = new Answer({
+            surveyID: surveyID,
+            answer: answer
+
+        })
+
+        newAnswer.save((err, result) => {
+            if (err) return console.log(err)
+            console.log('saved to database')
+            res.redirect(`/thanks`)
+        })
+
+    })
+
+
 
     // List all submissions of a given form
-    // app.get('/forms/:id/submissions)
+    // app.get('/forms/:id/answers)
 
     // To get an individual form submission
-    // app.get('/forms/:id/submissions/:id'
+    // app.get('/forms/:id/answers/:id'
 
     // Never look at all submissions across forms 
     // Fields in a given form would be different than other forms
@@ -186,22 +205,19 @@ module.exports = (app, passport, db) => {
     // user account will stay active in case they want to reconnect in the future
 
     // local -----------------------------------
-    app.get('/unlink/local', isLoggedIn, (req, res) => {
-        const user = req.user;
-        user.local.email = undefined;
-        user.local.password = undefined;
-        user.save((err) => {
-            res.redirect('/form');
-        });
-    });
+
 
 };
 
 // route middleware to ensure user is logged in
 const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated())
+    console.log(req.query)
+    if (req.isAuthenticated()) {
         return next();
-
+    }
+    if (req.query.isTaking === 'yes') {
+        return next();
+    }
     res.redirect('/');
 }
 

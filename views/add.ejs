@@ -1,9 +1,8 @@
-<a href="/read"><i class="fas fa-eye"></i></a>
 <section class="card card-body">
     <h3>Create Form</h3>
     <form action="/forms" method="post">
-        <section class="gotm-group">
-            <input type="text" class="form-control" name="title" id="title" placeholder="title" required>
+        <section class="form-group">
+            <input type="text" class="form-control" name="survey" id="survey" placeholder="title" required value="<%= survey %>">
         </section>
         <section class="form-group">
             <input type="text" class="form-control" name="question" placeholder="quesion" required>

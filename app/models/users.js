@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
         token: String,
         email: String,
         name: String
-    }
+    },
 
 });
 
@@ -36,9 +36,11 @@ userSchema.methods.generateHash = (password) => {
 };
 
 // checking if password is valid
-userSchema.methods.validPassword = (password) => {
-    return bcrypt.compareSync(password, this.local.password)
+userSchema.methods.validPassword = (password, dbPassword) => {
+    console.log('pass and local: ', password, dbPassword)
+    return bcrypt.compareSync(password, dbPassword)
 };
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema)
+
