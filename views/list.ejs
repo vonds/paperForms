@@ -1,21 +1,17 @@
-<% for(let i = 0; i < surveyList.length ; i++ ) { %>
+<section class="row">
+    <% for(let i = surveyList.length - 1 ; i > 0; i-- ) { %>
 
-
-<section class="card text-white title-list mx-auto mb-2">
-
-    <img class="card-img" src="img/cloud.jpg" alt="Card image">
-    <section class="card-img-overlay ">
-        <a class="btn btn-dark btn-lg nav-link float-right align-middle big-x mr-1" href="#">Delete</a>
-        <a class="btn btn-dark btn-lg nav-link float-right align-middle big-x mr-1" href="/forms?survey=<%= surveyList[i] %>">Edit</a>
-
-
-        <h5 class="card-title">
-            <%= surveyList[i] %>
-        </h5>
+    <section class="card title-list ml-5 mt-3" style="width: 18rem;">
+        <img class="card-img-top" src="img/cloud.jpg" alt="Card image cap">
+        <section class="card-body">
+            <h5 class="card-title text-center">
+                <%= surveyList[i] %>
+            </h5>
+            <a class="btn btn-dark nav-link float-right align-middle big-x mr-3" href="/deleteForm?survey=<%= surveyList[i] %>">Delete</a>
+            <a class="btn btn-dark nav-link float-right align-middle big-x mr-3" href="/forms?survey=<%= surveyList[i] %>">Edit</a>
+        </section>
     </section>
+
+    <% } %>
+
 </section>
-
-
-
-
-<% } %>

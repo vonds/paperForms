@@ -24,24 +24,31 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <section class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+            <section class="nav nav-pills nav-fill" id="navbarNav">
+                <ul class="navbar-nav nav justify-content-end">
                     <li class="nav-item">
-                        <a href="/" class="nav-link">Home</a>
+                        <a href="/" class="nav-link mr-5">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/about" class="nav-link">About</a>
+                        <a href="/about" class="nav-link mr-5">About</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
+
+
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink">Forms</a>
+                        <a href="#" class="nav-link dropdown-toggle mr-5" data-toggle="dropdown" id="navbarDropdownMenuLink">Forms</a>
                         <section class="dropdown-menu">
                             <a href="/add" class="dropdown-item">Create Form</a>
                             <a href="/list" class="dropdown-item">View Forms</a>
-                            <a href="/answer" class="dropdown-item">Completed Forms</a>
+                            <a href="/answers" class="dropdown-item">Completed Forms</a>
                         </section>
                     </li>
+
+                    <li>
+                        <a href="/login" class="btn btn-dark mr-5">Login</a>
+                    </li>
+
                 </ul>
             </section>
         </section>

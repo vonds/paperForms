@@ -5,14 +5,13 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  letter-spacing: 2px;
 }
 
-.jumbotron {
-    background: url('img/home.jpg') no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+.jumbotron,
+.card,
+.form-control {
+    border: 1px solid #333;
   
 }
 
@@ -36,7 +35,17 @@ body {
 }
 
 .card-title {
-    font-size: 60px;
+    font-size: 30px;
+}
+
+.navbar-expand-sm .navbar-nav .dropdown-menu {
+    border: 1px solid #333;
+}
+
+.dropdown-item:hover {
+    color: #fff;
+    transition: 0.9s;
+    box-shadow: inset 400px 0 0 0 #333;
 }
 
 .card-img {
@@ -52,9 +61,8 @@ body {
 
 .title-list {
     object-fit: cover;
-    width: 900px;
-    height: 120px;
-    transition: all .3s ease-in-out;;
+    transition: all .3s ease-in-out;
+    width: 150px;
 }
 
 .title-list:hover {
@@ -63,7 +71,11 @@ body {
 
 .btn-dark {
     color: #fff;
-    font-size: 20px; 
+    font-size: 15px; 
+}
+
+a.hover {
+    text-decoration: none;
 }
 
 .btn-dark:hover {
@@ -77,7 +89,7 @@ body {
 }
 
 .editNav {
-    margin: 5px 3px 11px -57%;
+    margin: 5px 3px 11px -52%;
 }
 
 .sticky {

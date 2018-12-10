@@ -1,4 +1,4 @@
-<section class="card-body">
+<section class="card-body mt-5">
     <h1 class="text-center card-title">
         <% if (question.length) { %>
         <%= question[0].survey %>
@@ -16,7 +16,7 @@
     </section>
     <!-- <section class="bg-dark p-2 mb-3"></section> -->
     <section class="mx-auto text-center bg-dark p-2 mb-3 fixed">
-        <a class="btn btn-dark btn-lg mb-3 editNav sticky" href="/edit?survey=<%= question[0].survey %>">Add Question</a>
+        <a class="btn btn-dark mb-3 editNav sticky" href="/edit?survey=<%= question[0].survey %>">Add Question</a>
     </section>
 </section>
 
@@ -29,12 +29,11 @@
 <form action="/forms/_id/answer" method="post">
     <label>Username</label for="userID">
     <input type="text" required>
-    <input type="submit" class="btn btn-dark btn-lg" value="Submit">
+    <input type="submit" class="btn btn-dark" value="Submit">
     <%} %>
 
-
     <% for(var i=0; i<question.length; i++) {%>
-    <section class="card card-body question">
+    <section class="card card-body question mt-5">
         <% if (isEditing) {%>
         <section class="float-right questionSp">
             <span class="float-right delete-question" data-question="<%= question[i].question %>">

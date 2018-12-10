@@ -15,6 +15,8 @@
         <section class="form-group">
             <textarea class="form-control" name="answer" disabled></textarea>
         </section>
-        <button href="/forms?survey=<%= survey %>"" type=" submit" class="btn btn-dark">Save</button>
+        <input type="hidden" name="survey" value="<%= survey%>">
+        <input type="submit" class="btn btn-dark btn-lg" value="Save">
+        <!-- <button href="/forms?survey=<%= survey%>"" type=" submit" class="btn btn-dark">Save</button> -->
     </form>
 </section>

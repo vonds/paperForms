@@ -72,6 +72,17 @@ module.exports = (app, passport, db) => {
         })
     })
 
+    app.get('/deleteForm', (req, res) => {
+        Question.deleteMany({ survey: req.query.survey }, err => {
+            if (err) return console.log(err)
+            res.redirect('/list')
+        })
+    })
+
+    // Tank.deleteOne({ size: 'large' }, function (err) {
+    //     if (err) return handleError(err);
+    //     // deleted at most one tank document
+    //   });
 
     // LOGOUT ==============================
     app.get('/logout', isLoggedIn, (req, res) => {
@@ -84,11 +95,11 @@ module.exports = (app, passport, db) => {
 
     app.post('/forms', isLoggedIn, (req, res) => {
         console.log(req.body)
+        console.log('post to /forms', req.body.survey)
         const survey = req.body.survey
         const question = req.body.question
         const type = req.body.type
         const userID = req.user._id
-        const locals = { isEditing: true }
         const newQuestion = new Question({
             survey: survey,
             question: question,
@@ -102,10 +113,8 @@ module.exports = (app, passport, db) => {
 
         newQuestion.save((err, result) => {
             if (err) return console.log(err)
-            console.log(result.id)
-            console.log(result._id)
             console.log('saved to database')
-            res.redirect(`/forms?survey=${result.survey}`, locals)
+            res.redirect(`/forms?survey=${survey}`)
         })
     })
 
@@ -148,6 +157,10 @@ module.exports = (app, passport, db) => {
             res.redirect(`/thanks`)
         })
 
+    })
+
+    app.get('/answers', (req, res) => {
+        res.render('answers')
     })
 
 
