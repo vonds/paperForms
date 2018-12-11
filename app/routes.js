@@ -160,9 +160,14 @@ module.exports = (app, passport, db) => {
     })
 
     app.get('/answers', (req, res) => {
-        res.render('answers')
+        Answer.find({ answer: req.query.answers }, (err, result) => {
+            console.log('this is the result:', result)
+            const locals = {
+                answer: result,
+            }
+            res.render('answers', locals)
+        })
     })
-
 
 
     // List all submissions of a given form

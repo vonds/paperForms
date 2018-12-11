@@ -27,6 +27,10 @@ body {
     font-size: 20px;
 }
 
+.small-txt {
+    font-size: 14px;
+}
+
 .ex-circle:hover {
     color: #cd0000;
     font-size: 20px;
@@ -78,11 +82,16 @@ a.hover {
     text-decoration: none;
 }
 
-.btn-dark:hover {
+.nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #666;
+}
+
+/* .btn-dark:hover {
     color: #333;
     transition: 0.9s;
     box-shadow: inset 400px 0 0 0 #fff;
-}
+} */
 
 .question-label {
     font-size: 20px;

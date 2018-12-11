@@ -1,9 +1,12 @@
-<section class="card-body mt-5">
+<section class="card card-body col-sm-6 center col-sm-offset-3 mx-auto mt-5 mb-5">
     <h1 class="text-center card-title">
         <% if (question.length) { %>
         <%= question[0].survey %>
         <% } else { %>
         Looks like you have no more questions for this survey
+        <p class="small-txt mt-2">Click on the forms nav button above to create a new form or look at forms you've
+            already
+            created</p>
         <% } %>
     </h1>
 </section>
@@ -53,11 +56,13 @@
                 <label class="question-label" for="answer">
                     <%= question[i].question %>
                 </label>
+                <% if (!isEditing) { %>
                 <section class="row justify-content-between">
-
+                    <textarea class="form-control mx-3" name="answer" required></textarea>
                 </section>
+                <% } %>
 
-                <textarea class="form-control" name="answer" required></textarea>
+
             </section>
             <% if (isEditing) {%>
         </form>

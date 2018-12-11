@@ -1,8 +1,24 @@
-<h1>List of answers will go here</h1>
-<!-- <% for(var i=0; i<question.length; i++) {%>
-<section>
-    <span>question.</span>
-    <p></p>
+<section class="card card-body col-sm-6 center text-center col-sm-offset-3 mx-auto mt-5">
+    <h1>List of answers will go here</h1>
 </section>
 
-<% } %> -->
+<% for(let i = answer.length - 1 ; i > 0; i-- ) { %>
+<section class="row">
+
+    <section class="form-group">
+
+        <label class="question-label" for="answer">
+        </label>
+        <section class="row justify-content-between">
+            <p>
+                <%= answer[i].answer %>
+            </p>
+
+        </section>
+
+
+
+    </section>
+
+</section>
+<% } %>
