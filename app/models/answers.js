@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const answerSchema = mongoose.Schema({
     userID: String, // link from user collection
     surveyID: String, // link from question collection
-    answer: { type: String, required: true },
+    answer: { type: String, required: true }
 })
 
 

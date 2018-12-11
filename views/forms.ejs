@@ -49,7 +49,7 @@
 
             <section class="form-group question-form">
 
-                <input type="hidden" value="text" name="type">
+                <input type="hidden" value="<%= question[i].survey %>" name="surveyID[]">
             </section>
             <section class="form-group">
 
@@ -58,7 +58,7 @@
                 </label>
                 <% if (!isEditing) { %>
                 <section class="row justify-content-between">
-                    <textarea class="form-control mx-3" name="answer" required></textarea>
+                    <textarea class="form-control mx-3" name="answer[]" required></textarea>
                 </section>
                 <% } %>
 

@@ -29,10 +29,14 @@ module.exports = (app, passport, db) => {
     app.get('/forms', isLoggedIn, (req, res) => {
 
         console.log(req.query)
+        let answerResult;
+        Answer.find({ answer: req.query.answers }, (err, result) => {
+            answerResult = result
+        })
         Question.find({ survey: req.query.survey }, (err, result) => {
             console.log('this is the result:', result)
             const locals = {
-
+                answer: answerResult,
                 question: result,
                 isEditing: !(req.query.isTaking && req.query.isTaking === 'yes'),
             }
@@ -142,28 +146,37 @@ module.exports = (app, passport, db) => {
 
 
     app.post('/forms/_id/answer', (req, res) => {
-        console.log(req.body)
+        console.log('this our answer: ', req.body.answer)
         const surveyID = req.body.surveyID
         const answer = req.body.answer
-        const newAnswer = new Answer({
-            surveyID: surveyID,
-            answer: answer
+        for (let i = 0; i < answer.length; i++) {
+            const newAnswer = new Answer({
 
-        })
+                surveyID: surveyID[0],
+                answer: answer[i]
 
-        newAnswer.save((err, result) => {
-            if (err) return console.log(err)
-            console.log('saved to database')
-            res.redirect(`/thanks`)
-        })
+            })
+            console.log("this is new Answer:", newAnswer)
+
+            newAnswer.save((err, result) => {
+                if (err) return console.log(err)
+                console.log('saved to database')
+                if (i === answer.length - 1) {
+                    res.redirect(`/thanks`)
+                }
+
+            })
+        }
+
 
     })
 
     app.get('/answers', (req, res) => {
-        Answer.find({ answer: req.query.answers }, (err, result) => {
+        console.log('this is our answer thing', req.query.surveyID)
+        Answer.find({ surveyID: req.query.surveyID }, (err, result) => {
             console.log('this is the result:', result)
             const locals = {
-                answer: result,
+                answer: result
             }
             res.render('answers', locals)
         })
