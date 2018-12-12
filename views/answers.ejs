@@ -11,13 +11,11 @@
             <%= answers[i].question %>
         </label>
         <section class="row justify-content-between">
-
+            <%= for (let j = 0; j < answers[i].answers.length; j++) { %>
             <p>
-                <%= answers[i].answer %>
+                <%= answers[i].answers[j] %>
             </p>
-
-
-
+            <%= } %>
         </section>
 
 
