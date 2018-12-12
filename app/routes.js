@@ -33,6 +33,7 @@ module.exports = (app, passport, db) => {
         Answer.find({ answer: req.query.answers }, (err, result) => {
             answerResult = result
         })
+        console.log(req.body)
         Question.find({ survey: req.query.survey }, (err, result) => {
             console.log('this is the result:', result)
             const locals = {
@@ -146,12 +147,15 @@ module.exports = (app, passport, db) => {
 
 
     app.post('/forms/_id/answer', (req, res) => {
-        console.log('this our answer: ', req.body.answer)
+        // console.log('this our answer: ', req.body.answer)
+
         const surveyID = req.body.surveyID
         const answer = req.body.answer
+        const questionID = req.body.questionID
+        console.log(req.body)
         for (let i = 0; i < answer.length; i++) {
             const newAnswer = new Answer({
-
+                questionID: questionID[i],
                 surveyID: surveyID[0],
                 answer: answer[i]
 
@@ -173,12 +177,35 @@ module.exports = (app, passport, db) => {
 
     app.get('/answers', (req, res) => {
         console.log('this is our answer thing', req.query.surveyID)
-        Answer.find({ surveyID: req.query.surveyID }, (err, result) => {
-            console.log('this is the result:', result)
-            const locals = {
-                answer: result
-            }
-            res.render('answers', locals)
+        Answer.find({ surveyID: req.query.surveyID }, (err, answers) => {
+            // console.log('these are the answers:', answers)
+            Question.find({ survey: req.query.surveyID }, (err, questions) => {
+                // console.log('these are the questions:', questions)
+                let allAnswers = []
+                for (let i = 0; i < questions.length; i++) {
+                    // get each question ID
+                    let questionText = questions[i].question;
+                    let aandQ = answers.filter((answer) => {
+                        return answers.questionID === questions[i].id
+                    }).map((questionAnswer) => questionAnswer.answer);
+                    // console.log("this is our answer and questions", aandQ)
+                    let QandAObj = {
+                        question: questionText,
+                        answers: aandQ,
+                    }
+                    allAnswers.push(QandAObj);
+                    console.log(allAnswers);
+                }
+                const locals = {
+                    answers: allAnswers
+
+                }
+
+                res.render('answers', locals)
+
+            })
+
+
         })
     })
 

@@ -10,9 +10,23 @@ body {
 
 .jumbotron,
 .card,
-.form-control {
+.form-control, 
+.info {
     border: 1px solid #333;
   
+}
+
+.info {
+    background: #fff;
+    padding: 20px;
+}
+
+.module {
+    margin: 0;
+    padding: 0;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
 }
 
 .question {
@@ -104,4 +118,44 @@ a.hover {
 .sticky {
     position: sticky;
    
+}
+
+.social-text-links {
+    text-decoration: none;
+
+    color: #fff;
+}
+
+.social-list {
+    display: inline-block;
+}
+
+.social {
+    color: rgba(255, 255, 255, .75);
+}
+
+.social:hover {
+    color:#fff; 
+    text-decoration:none; 
+    cursor:pointer;  
+}
+
+.social-text-links {
+    list-style-type: none;
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-text-links:hover {
+     color:#fff; 
+     text-decoration:none; 
+     cursor:pointer;  
+}
+
+.copyright {
+    color: #fff;
+}
+
+.footer {
+    margin-top: 200px;
 }

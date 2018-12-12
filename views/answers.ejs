@@ -2,17 +2,21 @@
     <h1>List of answers will go here</h1>
 </section>
 
-<% for(let i = answer.length - 1 ; i >= 0; i-- ) { %>
+<% for(let i = answers.length - 1 ; i >= 0; i-- ) { %>
 <section class="row">
 
     <section class="form-group">
 
         <label class="question-label" for="answer">
+            <%= answers[i].question %>
         </label>
         <section class="row justify-content-between">
-            <p class="card card-body center text-center col-sm-offset-3 mx-auto mt-5">
-                <%= answer[i].answer %>
+            <% for(let i = 0; i < answers.length; i++){ %>
+            <p class="card card-body center text-center col-sm-offset-3 mx-auto mt-2">
+                <%= answers[i].answers %>
             </p>
+            <% } %>
+
 
         </section>
 

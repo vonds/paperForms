@@ -48,7 +48,8 @@
 
 
             <section class="form-group question-form">
-
+                <input type="hidden" value="<%= question[i].id %>" name="questionID[]">
+                <% console.log(question[i]) %>
                 <input type="hidden" value="<%= question[i].survey %>" name="surveyID[]">
             </section>
             <section class="form-group">
