@@ -15,7 +15,8 @@
 <section class="sticky">
     <section class="float-right text-center bg-dark text-white p-2 navbar">
         <label class="pr-3" for="url">Url to current survey</label>
-        <input type="text" value="http://localhost:7000/forms?survey=<%= question[0].survey %>&isTaking=yes" id="url">
+        <input type="text" value="<%= req.protocol + '://' + req.get('host') + req.originalUrl + question[0].survey %>&isTaking=yes"
+            id="url">
     </section>
     <section class="mx-auto text-center bg-dark p-2 mb-3 fixed">
         <a class="btn btn-dark mb-3 editNav sticky" href="/edit?survey=<%= question[0].survey %>">Add Question</a>
