@@ -26,17 +26,19 @@
             </button>
             <section class="nav nav-pills nav-fill" id="navbarNav">
                 <ul class="navbar-nav nav justify-content-end">
+                    <!-- 
                     <li class="nav-item">
                         <a href="/" class="nav-link mr-5">Home</a>
-                    </li>
-                    <li class="nav-item">
+                    </li> -->
+                    <!-- <li class="nav-item">
                         <a href="/about" class="nav-link mr-5">About</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <ul class="navbar-nav ml-auto">
 
 
                     <li class="nav-item dropdown">
+                        <% if(loggedIn)  { %>
                         <a href="#" class="nav-link dropdown-toggle mr-5" data-toggle="dropdown" id="navbarDropdownMenuLink">Forms</a>
                         <section class="dropdown-menu">
                             <a href="/add" class="dropdown-item">Create Form</a>
@@ -44,9 +46,22 @@
                         </section>
                     </li>
 
+                    <% } %>
+
+
+                    <%  if(!loggedIn) { %>
                     <li>
                         <a href="/login" class="btn btn-dark mr-5">Login</a>
                     </li>
+
+                    <% } else {%>
+
+                    <li>
+                        <a href="/logout" class="btn btn-dark mr-5">Logout</a>
+                    </li>
+
+                    <% } %>
+
 
                 </ul>
             </section>
@@ -59,29 +74,7 @@
     </section>
 
 
-    <footer class="bg-dark footer">
-        <section class="container">
-            <section class="row">
-                <section class="col-sm-12">
-                    <ul class="social-text-links font-alt text-center mt-5 mb-5">
-                        <li class="social-list mr-3"><a class="social" href="https://github.com/vonds" target="_blank">Github</a></li>
-                        <li class="social-list mr-3"><a class="social" href="https://www.linkedin.com/in/vonds-auguste-007154161/"
-                                target="_blank">Linkedin</a></li>
-                        <li class="social-list mr-3"><a class="social" href="https://www.instagram.com/vonds.io/"
-                                target="_blank">Instagram</a></li>
-                    </ul>
-                </section>
-            </section>
-            <section class="row">
-                <section class="col-sm-12">
-                    <p class="copyright text-center m-b-0"><a href="https://vonds.github.io/" class="social">VONDS
-                            &copy;
-                            <script>document.write(new Date().getFullYear());</script></a>
-                    </p>
-                </section>
-            </section>
-        </section>
-    </footer>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

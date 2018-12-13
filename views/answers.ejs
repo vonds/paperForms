@@ -1,5 +1,5 @@
 <section class="card card-body col-sm-6 center text-center col-sm-offset-3 mx-auto mt-5 mb-5">
-    <h1>List of answers will go here</h1>
+    <h1>Answers</h1>
 </section>
 
 <% for(let i = answers.length - 1 ; i >= 0; i-- ) { %>
@@ -10,9 +10,15 @@
         <label class="question-label" for="answer">
             <%= answers[i].question %>
         </label>
-        <section class="row justify-content-between">
-            <% for (let j = 0; j < answers[i].answers.length; j++) { %>
-            <p>
+        <section>
+            <% for (let j = answers[i].answers.length; j >= 0 ; j--) { %>
+
+            <p class="text-center">
+
+                <%= answers[i].responseID %>
+            </p>
+
+            <p class="text-center">
                 <%= answers[i].answers[j] %>
             </p>
             <% } %>

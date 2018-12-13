@@ -10,18 +10,25 @@ module.exports = (app, passport, db) => {
     // Index Route
     app.get('/', (req, res) => {
         const locals = {
-            title: 'Paper'
+            title: 'Paper',
+            loggedIn: req.isAuthenticated()
         }
         res.render('index', locals)
     })
 
     // About Route
     app.get('/about', (req, res) => {
-        res.render('about')
+        const locals = {
+            loggedIn: req.isAuthenticated()
+        }
+        res.render('about', locals)
     })
 
     // Thanks Route
     app.get('/thanks', (req, res) => {
+        const locals = {
+            loggedIn: req.isAuthenticated()
+        }
         res.render('thanks')
     })
 
@@ -37,6 +44,7 @@ module.exports = (app, passport, db) => {
         Question.find({ survey: req.query.survey }, (err, result) => {
             console.log('this is the result:', result)
             const locals = {
+                loggedIn: req.isAuthenticated(),
                 answer: answerResult,
                 question: result,
                 isEditing: !(req.query.isTaking && req.query.isTaking === 'yes'),
@@ -51,6 +59,7 @@ module.exports = (app, passport, db) => {
     app.get('/edit', isLoggedIn, (req, res) => {
         console.log('survey =', req.query.survey)
         res.render('edit', {
+            loggedIn: req.isAuthenticated(),
             survey: req.query.survey ? req.query.survey : ''
         })
     })
@@ -59,6 +68,7 @@ module.exports = (app, passport, db) => {
     app.get('/add', isLoggedIn, (req, res) => {
         console.log('survey =', req.query.survey)
         res.render('add', {
+            loggedIn: req.isAuthenticated(),
             survey: req.query.survey ? req.query.survey : ''
         })
     })
@@ -72,6 +82,7 @@ module.exports = (app, passport, db) => {
                 }
             }
             res.render('list', {
+                loggedIn: req.isAuthenticated(),
                 surveyList: surveyList
             })
         })
@@ -80,14 +91,11 @@ module.exports = (app, passport, db) => {
     app.get('/deleteForm', (req, res) => {
         Question.deleteMany({ survey: req.query.survey }, err => {
             if (err) return console.log(err)
-            res.redirect('/list')
+            res.redirect('/list', {
+                loggedIn: req.isAuthenticated()
+            })
         })
     })
-
-    // Tank.deleteOne({ size: 'large' }, function (err) {
-    //     if (err) return handleError(err);
-    //     // deleted at most one tank document
-    //   });
 
     // LOGOUT ==============================
     app.get('/logout', isLoggedIn, (req, res) => {
@@ -139,22 +147,17 @@ module.exports = (app, passport, db) => {
     })
     // Form Submissions ===================================================
 
-
-
-
-    // Create new form submission
-    // app.post('/forms/:id/answers'
-
-
     app.post('/forms/_id/answer', (req, res) => {
         // console.log('this our answer: ', req.body.answer)
 
         const surveyID = req.body.surveyID
         const answer = req.body.answer
         const questionID = req.body.questionID
+        const responseID = req.body.responseID
         console.log(req.body)
         for (let i = 0; i < answer.length; i++) {
             const newAnswer = new Answer({
+                responseID: responseID,
                 questionID: questionID[i],
                 surveyID: surveyID[0],
                 answer: answer[i]
@@ -176,19 +179,20 @@ module.exports = (app, passport, db) => {
     })
 
     app.get('/answers', (req, res) => {
+
         console.log('this is our answer thing', req.query.surveyID)
         Answer.find({ surveyID: req.query.surveyID }, (err, answers) => {
-            // console.log('these are the answers:', answers)
+            console.log('these are the answers:', answers)
             Question.find({ survey: req.query.surveyID }, (err, questions) => {
-                // console.log('these are the questions:', questions)
+                console.log('these are the questions:', questions)
                 let allAnswers = []
                 for (let i = 0; i < questions.length; i++) {
                     // get each question ID
                     let questionText = questions[i].question;
                     let aandQ = answers.filter((answer) => {
-                        return answers.questionID === questions[i].id
+                        return answer.questionID === questions[i].id
                     }).map((questionAnswer) => questionAnswer.answer);
-                    // console.log("this is our answer and questions", aandQ)
+                    console.log("this is our answer and questions", aandQ)
                     let QandAObj = {
                         question: questionText,
                         answers: aandQ,
@@ -197,7 +201,8 @@ module.exports = (app, passport, db) => {
                     console.log(allAnswers);
                 }
                 const locals = {
-                    answers: allAnswers
+                    answers: allAnswers,
+                    loggedIn: req.isAuthenticated()
 
                 }
 
@@ -209,21 +214,6 @@ module.exports = (app, passport, db) => {
         })
     })
 
-
-    // List all submissions of a given form
-    // app.get('/forms/:id/answers)
-
-    // To get an individual form submission
-    // app.get('/forms/:id/answers/:id'
-
-    // Never look at all submissions across forms 
-    // Fields in a given form would be different than other forms
-
-
-
-
-
-
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
@@ -232,28 +222,34 @@ module.exports = (app, passport, db) => {
     // LOGIN ===============================
     // show the login form
     app.get('/login', (req, res) => {
-        res.render('login.ejs', { message: req.flash('loginMessage') });
-    });
+        res.render('login.ejs', {
+            loggedIn: req.isAuthenticated(),
+            message: req.flash('loginMessage')
+        })
+    })
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/add', // redirect to the secure profile section
         failureRedirect: '/login', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
-    }));
+    }))
 
     // SIGNUP =================================
     // show the signup form
     app.get('/signup', (req, res) => {
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
-    });
+        res.render('signup.ejs', {
+            message: req.flash('signupMessage'),
+            loggedIn: req.isAuthenticated()
+        })
+    })
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/add', // redirect to the secure profile section
         failureRedirect: '/signup', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
-    }));
+    }))
 
     // =============================================================================
     // UNLINK ACCOUNTS =============================================================

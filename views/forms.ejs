@@ -17,7 +17,6 @@
         <label class="pr-3" for="url">Url to current survey</label>
         <input type="text" value="http://localhost:7000/forms?survey=<%= question[0].survey %>&isTaking=yes" id="url">
     </section>
-    <!-- <section class="bg-dark p-2 mb-3"></section> -->
     <section class="mx-auto text-center bg-dark p-2 mb-3 fixed">
         <a class="btn btn-dark mb-3 editNav sticky" href="/edit?survey=<%= question[0].survey %>">Add Question</a>
     </section>
@@ -30,8 +29,8 @@
 
 
 <form action="/forms/_id/answer" method="post">
-    <label>Username</label for="userID">
-    <input type="text" required>
+    <label>Username</label for="responseID">
+    <input type="text" name="responseID" required>
     <input type="submit" class="btn btn-dark" value="Submit">
     <%} %>
 

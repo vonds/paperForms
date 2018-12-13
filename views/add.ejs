@@ -2,10 +2,12 @@
     <h3>Create Form</h3>
     <form action="/forms" method="post">
         <section class="form-group">
+            <label for="survey">Title</label>
             <input type="text" class="form-control" name="survey" id="survey" placeholder="title" required value="<%= survey %>">
         </section>
         <section class="form-group">
-            <input type="text" class="form-control" name="question" placeholder="quesion" required>
+            <label for="survey">Question</label>
+            <input type="text" class="form-control" name="question" placeholder="question" required>
             <input type="hidden" value="text" name="type">
         </section>
         <button type="submit" class="btn btn-dark">Save</button>
